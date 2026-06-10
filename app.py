@@ -734,4 +734,4 @@ def login():
 # For development, run `python init_db.py` once, then `flask db init`, `flask db migrate`, `flask db upgrade`.
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', debug=True, port=5000)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=False, allow_unsafe_werkzeug=True)
