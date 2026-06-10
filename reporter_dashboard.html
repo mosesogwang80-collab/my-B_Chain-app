@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B_Chain - Reporter Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="top-nav">
+            <div class="nav-brand">B-Chain System</div>
+            <a href="#" id="globalBackBtn" class="nav-link hidden" style="margin-left: 20px; border: 1px solid rgba(255,255,255,0.3);">← Back</a>
+            <nav class="nav-links">
+                <a href="#" class="nav-link sidebar-link active" data-target="view-overview">Home</a>
+                <a href="#" class="nav-link sidebar-link" data-target="view-messages">Contact</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropbtn">Menu ▾</button>
+                    <div class="nav-dropdown-content">
+                        <a href="#" class="sidebar-link" data-target="view-submit">Submit New Report</a>
+                        <a href="#" class="sidebar-link" data-target="view-history">Submission History</a>
+                        <a href="profile.html">My Profile</a>
+                        <a href="#" class="sidebar-link" data-target="view-messages">Messages</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <button class="nav-dropbtn">Actions ▾</button>
+                    <div class="nav-dropdown-content">
+                        <a href="#" id="feedbackAdminBtn">Message Admin</a>
+                        <a href="#" id="feedbackCollectorBtn">Message Collector</a>
+                        <a href="#" id="reportAlertBtn" style="color: #f44336 !important; border-top: 1px solid #eee;">Report Critical Issue</a>
+                    </div>
+                </div>
+                <a href="#" class="nav-link" onclick="logout()" style="margin-left: 10px;">Logout</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <img src="logo.png" alt="B_Chain Logo" class="logo">
+            <!-- Overview Section -->
+            <div id="view-overview" class="dashboard-view">
+                <h2>My Submissions</h2>
+                
+                <!-- Container for real-time unread message alerts -->
+                <div class="home-unread-alerts hidden"></div>
+
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><h4>Reports Filed</h4><p id="stat-filed">0</p></div>
+                    <div class="stat-card"><h4>Verified</h4><p id="stat-verified">0</p></div>
+                    <div class="stat-card"><h4>Total Credits</h4><p id="stat-rewards">0</p></div>
+                </div>
+            </div>
+
+            <!-- Submit Report Section -->
+            <div id="view-submit" class="dashboard-view hidden">
+                <h2>Submit New Report</h2>
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <form id="requestForm">
+                        <div class="form-group">
+                            <label>Parish (Nakawa Division)</label>
+                            <select id="locationSelect" required>
+                                <option value="">Select Parish...</option>
+                                <option value="Mutungo" data-fee="15000">Mutungo</option>
+                                <option value="Luzira" data-fee="18000">Luzira</option>
+                                <option value="Bugolobi" data-fee="20000">Bugolobi</option>
+                                <option value="Naguru" data-fee="22000">Naguru</option>
+                                <option value="Nakawa" data-fee="12000">Nakawa</option>
+                                <option value="Ntinda" data-fee="20000">Ntinda</option>
+                                <option value="Kiwatule" data-fee="25000">Kiwatule</option>
+                                <option value="Banda" data-fee="15000">Banda</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 15px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label>Zone / Village</label>
+                                <select id="zoneSelect" required disabled>
+                                    <option value="">Select Zone...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 15px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label>Street</label>
+                                <input type="text" id="streetName" placeholder="e.g. Old Port Bell Rd" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Plot Number</label>
+                                <input type="text" id="plotNumber" placeholder="e.g. Plot 4B" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Waste Type</label>
+                            <select id="wasteType" required>
+                                <option value="solid">Solid Waste (Garbage/Trash)</option>
+                                <option value="liquid">Liquid Waste (Sewage/Septic)</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 15px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label>Quantity</label>
+                                <input type="number" id="wasteQuantity" value="1" min="0.1" step="0.1" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Unit of Measure</label>
+                                <select id="wasteUnit" required>
+                                    <!-- Options populated dynamically by JS -->
+                                    <option value="KGs">KGs</option>
+                                    <option value="Bags">Bags</option>
+                                    <option value="Litres">Litres</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description & Special Instructions</label>
+                            <input type="text" id="serviceDesc" placeholder="e.g. 3 bags of plastic waste" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Picture (Optional)</label>
+                            <input type="file" id="wasteImage" accept="image/*">
+                        </div>
+                        <div id="feeEstimate" style="margin-bottom: 15px; font-weight: bold; color: #3F51B5;">
+                            Estimated Fee: UGX 0
+                        </div>
+                        <button type="submit" class="register-button">Pay & Request Collection</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div id="view-history" class="dashboard-view hidden"> 
+                <h2>Submission History</h2>
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="responsive-table-container">
+                        <table>
+                            <thead>
+                                <tr style="border-bottom: 2px solid #eee;">
+                                    <th style="padding: 10px;">Date</th>
+                                    <th>Location</th>
+                                    <th>Waste Type</th>
+                                    <th>Company</th>
+                                    <th>Fee (UGX)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reporter-history-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messaging View -->
+            <div id="view-messages" class="dashboard-view hidden" style="flex: 1; display: flex; flex-direction: column;">
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="message-area" style="flex: 1; display: flex;">
+                    <div class="chat-list" id="reporter-chat-list"></div>
+                    <div class="chat-window" id="reporter-chat-window">
+                        <div class="chat-header">
+                            <span id="reporter-current-chat-name">Chat with: </span>
+                            <select id="reporter-chat-selector" class="chat-selector">
+                                <option value="">Select a person...</option>
+                            </select>
+                        </div>
+                        <div class="chat-messages" id="reporter-chat-messages"></div>
+                        <div class="chat-input">
+                            <input type="text" id="reporter-message-input" placeholder="Type a message...">
+                            <button class="register-button" style="width: auto; margin-top: 0;" id="reporter-send-message-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2026 B_Chain Waste Management System. All Rights Reserved.</p>
+        <p>Designed for the Nakawa Division Community.</p>
+    </footer>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Confirm Payment & Report</h3>
+            <div id="reportSummary">
+                <!-- Report details will be inserted here by JavaScript -->
+            </div>
+            <div class="form-group" id="paymentMethodSection">
+                <label>Payment Method:</label>
+                <div class="payment-options">
+                    <input type="radio" id="payMobileMoney" name="paymentMethod" value="mobileMoney" required>
+                    <label for="payMobileMoney">Mobile Money</label>
+                    <input type="radio" id="payCash" name="paymentMethod" value="cash">
+                    <label for="payCash">Cash on Collection</label>
+                </div>
+            </div>
+            <div id="mobileMoneyDetails" class="form-group hidden">
+                <label for="mobileMoneyNumber">Your Active Mobile Money Number</label>
+                <input type="text" id="mobileMoneyNumber" placeholder="e.g. +2567xxxxxxxx">
+                <div id="collectorPaymentInfo" class="hidden" style="margin-top: 15px; padding: 10px; border: 1px dashed #4CAF50; border-radius: 5px; background-color: #f0fff0;">
+                    <p style="margin: 0; font-size: 0.9em; color: #2e7d32;"><strong>Payment Recipient:</strong></p>
+                    <p id="targetCompanyName" style="margin: 5px 0 0 0; font-weight: bold;"></p>
+                    <p id="targetCompanyNumber" style="margin: 2px 0 0 0; color: #3F51B5; font-size: 1.1em; font-weight: bold;"></p>
+                </div>
+            </div>
+            <!-- New Reference Number Section -->
+            <div id="referenceSection" class="form-group hidden">
+                <label for="paymentReference">Enter Payment Reference Number (from SMS)</label>
+                <input type="text" id="paymentReference" placeholder="e.g. 23849583721">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="register-button btn-red" id="cancelPaymentBtn">Cancel</button>
+                <button type="button" class="register-button" id="confirmPaymentBtn">Confirm Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div id="ratingModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3>Rate Service</h3>
+            <p id="ratingTaskInfo" style="font-weight: bold; margin-bottom: 10px;"></p>
+            
+            <div id="collector-rating-section">
+                <label>Rate the Collector (Company)</label>
+                <div class="rating-stars" id="collector-stars">
+                    <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+                </div>
+            </div>
+
+            <label>Rate the B_Chain System</label>
+            <div class="rating-stars" id="system-stars">
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="register-button btn-red" id="cancelRatingBtn">Cancel</button>
+                <button type="button" class="register-button" id="submitRatingBtn">Submit Rating</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage" style="margin-bottom: 25px; color: #555;"></p>
+            <input type="text" id="confirmInput" class="hidden" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;" placeholder="Enter value here...">
+            <div class="modal-actions">
+                <button type="button" class="register-button btn-red" style="width: 45%;" id="cancelActionBtn">No, Cancel</button>
+                <button type="button" class="register-button" style="width: 45%;" id="proceedActionBtn">Yes, Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

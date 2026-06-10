@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B_Chain - Register</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body class="registration-container-wrapper">
+    <div class="registration-container">
+        <img src="logo.png" alt="B_Chain Logo" class="logo">
+        <h2>Create Account</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Choose a username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Create a password">
+            </div>
+            <div class="form-group">
+                <label for="accountType">I am a...</label>
+                <select id="accountType" name="role" required>
+                    <option value="Reporter">Reporter (Resident)</option>
+                    <option value="Collector">Collector (Waste Company)</option>
+                </select>
+            </div>
+            <div id="companyFields" class="hidden">
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" name="companyName" placeholder="Enter company name">
+                </div>
+                <div class="form-group">
+                    <label for="collectorType">Waste Collection Specialty</label>
+                    <select id="collectorType" name="collectorType">
+                        <option value="solid">Solid Waste (Garbage/Trash)</option>
+                        <option value="liquid">Liquid Waste (Sewage/Septic)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="location">Location / Address</label>
+                <input type="text" id="location" name="location" required placeholder="e.g. Mutungo, Zone III">
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact Number</label>
+                <input type="text" id="contact" name="contact" required placeholder="e.g. 0770000000">
+            </div>
+            <button type="submit" class="register-button">Register</button>
+        </form>
+        <a href="login.html" class="login-link">Already have an account? Login</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 B_Chain Waste Management System. All Rights Reserved.</p>
+        <p>Designed for the Nakawa Division Community.</p>
+    </footer>
+    <script type="module" src="main.js"></script>
+</body>
+</html>

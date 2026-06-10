@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B_Chain - Cleaning Excellence</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        .landing-body { background-color: #fff; display: block; overflow-x: hidden; }
+        .hero-section { background: linear-gradient(135deg, #3F51B5 0%, #1a237e 100%); color: white; padding: 100px 20px; text-align: center; }
+        .hero-section h1 { font-size: 3.5em; margin-bottom: 10px; }
+        .hero-section p { font-size: 1.2em; margin-bottom: 30px; opacity: 0.9; }
+        
+        .content-container { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
+        .section-title { color: #3F51B5; font-size: 2.2em; border-bottom: 3px solid #4CAF50; display: inline-block; margin-bottom: 30px; }
+        
+        .grid-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-bottom: 50px; }
+        .info-card { padding: 30px; border-radius: 12px; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .info-card:hover { transform: translateY(-10px); }
+        .info-card h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.5em; }
+        
+        /* Distinct Section Colors */
+        .card-about { background-color: #673AB7; color: white; }
+        .card-aim { background-color: #2E7D32; color: white; }
+        .card-vision { background-color: #F9A825; color: #333; }
+        .card-location { background-color: #5D4037; color: white; padding: 40px; border-radius: 12px; margin-top: 20px; text-align: center; }
+        
+        .policy-box { background: #6edbc0; padding: 30px; border-radius: 12px; margin-top: 40px; }
+        .policy-list { text-align: left; line-height: 1.8; }
+        
+        .cta-btns { display: flex; gap: 20px; justify-content: center; margin-top: 20px; }
+        .btn-main { background: #4CAF50; color: white; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: 0.3s; }
+        .btn-outline { background: transparent; color: white; border: 2px solid white; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: 0.3s; }
+        .btn-main:hover { background: #388E3C; transform: translateY(-3px); }
+        .btn-outline:hover { background: white; color: #3F51B5; }
+
+    </style>
+</head>
+<body class="landing-body">
+
+    <header class="hero-section">
+        <img src="logo.png" alt="B_Chain Logo" class="logo" style="width: 210px; height: 210px;">
+        <h1>Welcome to B_Chain</h1>
+        <p>"Cleaning Excellence in Nakawa Division"</p>
+        <div class="cta-btns">
+            <a href="javascript:void(0)" class="btn-main" onclick="window.openSafetyNotice()">Get Started</a> <!-- This remains for the safety notice flow -->
+            <a href="javascript:void(0)" class="btn-outline" onclick="window.showLandingContent()">Learn More</a>
+        </div>
+    </header>
+
+    <div class="content-container hidden" id="about">
+        <div class="grid-info">
+            <div class="info-card card-about">
+                <h3>About Us</h3>
+                <p>B_Chain is a decentralized waste management coordination platform designed to bridge the gap between residents (Reporters) and private waste collectors. By digitizing the request and payment flow, we ensure Nakawa stays clean through efficient, transparent service delivery.</p>
+            </div>
+            <div class="info-card card-aim">
+                <h3>Our Aim</h3>
+                <p>Our primary objective is to eliminate illegal dumping and delayed waste collection. We aim to provide real-time tracking of waste hotspots, ensure fair pricing for residents, and guarantee timely payouts for collection companies.</p>
+            </div>
+            <div class="info-card card-vision">
+                <h3>Our Vision</h3>
+                <p>To be the leading smart-city solution for environmental sanitation in Uganda, fostering a culture of cleanliness and sustainability through innovative technology and community coordination.</p>
+            </div>
+        </div>
+
+        <div class="card-location">
+            <h2 style="color: #FFEB3B; margin-bottom: 20px;">Our Location & Inventors</h2>
+            <p style="font-size: 1.1em; color: white; max-width: 800px; margin: 0 auto; line-height: 1.6;">Developed by the dedicated <strong>B_Chain Engineering Team</strong>, this innovative project was conceived and operates from its central hub at <strong>Nakawa UICT</strong> in Uganda. Our mission is driven by a passion for environmental sustainability and urban technological innovation.</p>
+        </div>
+
+        <div class="policy-box">
+            <center><h2 style="color: #3F51B5;">Terms, Conditions & Policies</h2></center>
+            <div class="policy-list">
+                <p><strong>1. User Responsibility:</strong> Reporters must ensure that waste is properly sorted and accessible at the specified location upon the collector's arrival.</p>
+                <p><strong>2. Payment Policy:</strong> Payments are processed via Mobile Money or Cash. Mobile Money payments are held until task completion is verified to ensure collector accountability.</p>
+                <p><strong>3. Privacy:</strong> We protect user data. Contact information is only shared between a Reporter and their specifically allocated Collector to facilitate service.</p>
+                <p><strong>4. System Maintenance:</strong> A 2% levy is applied to every transaction to facilitate system maintenance and operational costs.</p>
+                <p><strong>5. Deactivation:</strong> The system administrator reserves the right to deactivate any account (Reporter or Collector) found violating standard environmental laws or system protocols.</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <button class="btn-main" onclick="window.hideLandingContent()" style="background-color: #6c757d;">Back to Index</button>
+        </div>
+    </div>
+
+    <!-- Safety & Security Notice Modal -->
+    <div id="safetyNoticeModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 550px; text-align: left;">
+            <h2 style="color: #2e7d32; text-align: center; margin-bottom: 20px;">🛡️ Safety & Security First</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h4 style="color: #3F51B5; margin-bottom: 8px;">Security Tips</h4>
+                    <p style="font-size: 0.9em; line-height: 1.4; color: #555;"><strong>Protect Passwords:</strong> Never share your login or transaction passwords. Use strong, unique combinations.</p>
+                    <p style="font-size: 0.9em; line-height: 1.4; color: #555; margin-top: 10px;"><strong>Verify Receipts:</strong> Always request and confirm a company receipt when paying cash for services.</p>
+                </div>
+                <div>
+                    <h4 style="color: #3F51B5; margin-bottom: 8px;">Payment Advice</h4>
+                    <p style="font-size: 0.9em; line-height: 1.4; color: #555;"><strong>Confirm Amount:</strong> Drivers/Collectors, always confirm the full payment amount before completing any transaction.</p>
+                    <p style="font-size: 0.9em; line-height: 1.4; color: #555; margin-top: 10px;"><strong>Official Requests:</strong> All transactions must be done through the B_Chain system to be valid.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
+                <p style="font-size: 0.85em; color: #888; margin-bottom: 15px;">By proceeding, you acknowledge that you have read and understood our safety guidelines.</p>
+                <div class="modal-actions" style="justify-content: center; gap: 15px;">
+                    <button type="button" class="register-button btn-red" style="width: auto; padding: 10px 25px;" onclick="document.getElementById('safetyNoticeModal').classList.add('hidden')">Cancel</button>
+                    <button type="button" class="register-button" style="width: auto; padding: 10px 25px;" onclick="window.location.href='login.html'">I Understand, Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 B_Chain Waste Management System. All Rights Reserved.</p>
+        <p><small>Designed for the Nakawa Division Community.</small></p>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

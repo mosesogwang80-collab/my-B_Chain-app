@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B_Chain - My Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body class="registration-container-wrapper">
+    <div class="registration-container">
+        <img src="logo.png" alt="B_Chain Logo" class="logo">
+        <h2>My Profile</h2>
+        <form id="profileForm" class="profile-view-mode">
+            <div class="form-group">
+                <label for="profileFullName">Full Name</label>
+                <input type="text" id="profileFullName" name="fullName" required disabled placeholder="Your full name">
+            </div>
+            <div class="form-group">
+                <label for="profileUsername">Username</label>
+                <input type="text" id="profileUsername" name="username" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="profileRole">Role</label>
+                <input type="text" id="profileRole" name="role" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="profileContact">Contact Number</label>
+                <input type="text" id="profileContact" name="contact" required disabled placeholder="e.g. 0770000000 or +25677...">
+            </div>
+            <div class="form-group">
+                <label for="profileLocation">Location</label>
+                <input type="text" id="profileLocation" name="location" disabled placeholder="Your primary location">
+            </div>
+            <div class="form-group hidden" id="profileCompanyFields">
+                <label for="profileCompanyName">Company Name</label>
+                <input type="text" id="profileCompanyName" name="companyName" disabled placeholder="Your company name">
+            </div>
+            <div class="profile-actions">
+                <button type="button" id="editProfileBtn" class="register-button" style="background-color: #3F51B5;">Edit Profile</button>
+                <button type="submit" id="saveProfileBtn" class="register-button hidden">Save Changes</button>
+                <button type="button" id="cancelEditBtn" class="register-button btn-red hidden" style="margin-top: 10px;">Cancel</button>
+            </div>
+        </form>
+        <a href="login.html" class="login-link">Back to Login</a>
+    </div>
+    <footer>
+        <p>&copy; 2026 B_Chain Waste Management System. All Rights Reserved.</p>
+    </footer>
+    <script type="module" src="main.js"></script>
+</body>
+</html>

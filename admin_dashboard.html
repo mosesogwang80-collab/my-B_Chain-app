@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B_Chain - Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="top-nav">
+            <div class="nav-brand">B-Chain System</div>
+            <a href="#" id="globalBackBtn" class="nav-link hidden" style="margin-left: 20px; border: 1px solid rgba(255,255,255,0.3);">← Back</a>
+            <nav class="nav-links">
+                <a href="#" class="nav-link sidebar-link active" data-target="admin-overview">Home</a>
+                <a href="#" class="nav-link sidebar-link" data-target="view-messages">Contact</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropbtn">Menu ▾</button>
+                    <div class="nav-dropdown-content">
+                        <a href="#" class="sidebar-link" data-target="admin-users">User List</a>
+                        <a href="#" class="sidebar-link" data-target="admin-settings">System Rates</a>
+                        <a href="#" class="sidebar-link" data-target="admin-logs">System Logs</a>
+                        <a href="profile.html">My Profile</a>
+                        <a href="#" class="sidebar-link" data-target="view-messages">Messages</a>
+                    </div>
+                </div>
+                <a href="#" class="nav-link" onclick="logout()" style="margin-left: 10px;">Logout</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <img src="logo.png" alt="B_Chain Logo" class="logo">
+            <div id="admin-overview" class="dashboard-view">
+                <div class="system-control-box">
+                    <span id="system-status-text" style="font-weight: bold; margin-right: 15px; color: #333;">System Status: Online</span>
+                    <label class="switch">
+                        <input type="checkbox" id="systemToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <button id="broadcastMaintenanceBtn" class="register-button" style="width: auto; padding: 8px 15px; margin-top: 0; margin-left: 15px; background-color: #f39c12; font-size: 0.85em;">Broadcast Maintenance</button>
+                </div>
+                <h2>System Overview</h2>
+                
+                <!-- Container for real-time unread message alerts -->
+                <div class="home-unread-alerts hidden"></div>
+
+                <div class="stat-card">
+                    <h3>Recent Activity</h3>
+                    <div id="admin-alerts-container">
+                        <p style="color: #666;">Loading alerts...</p>
+                    </div>
+                </div>
+
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card" id="stat-card-users" style="cursor: pointer;"><h4>Total Users</h4><p id="admin-stat-users">0</p></div>
+                    <div class="stat-card" id="stat-card-revenue" style="cursor: pointer;"><h4>System Revenue (2%)</h4><p id="system-revenue">UGX 0</p></div>
+                    <div class="stat-card" id="stat-card-history" style="cursor: pointer;"><h4>Total Transactions</h4><p id="admin-stat-history">0</p></div>
+                    <div class="stat-card"><h4>System Rating</h4><p id="admin-system-rating">0.0 ⭐</p></div>
+                </div>
+
+                <div class="stat-card" style="margin-top: 20px; border-top: 4px solid #4CAF50;">
+                    <h3>Financial Management</h3>
+                    <p>Available for Withdrawal: <strong id="available-for-withdrawal" style="color: #2e7d32;">UGX 0</strong></p>
+                    <button id="withdrawFeesBtn" class="register-button" style="width: auto; margin-top: 10px;">Withdraw Maintenance Fees</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Waste Hotspots (by Parish)</h3>
+                        <div id="admin-hotspots-list" style="margin-top: 10px;"></div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Case Status Summary</h3>
+                        <div id="admin-status-summary" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- User Management View -->
+            <div id="admin-users" class="dashboard-view hidden">
+                <h2>User Management</h2>
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                
+                <h3>Pending Approvals</h3>
+                <div class="stat-card" style="margin-bottom: 20px;">
+                    <!-- Wrap tables in responsive container for mobile -->
+                    <div class="responsive-table-container"> 
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Company Name</th>
+                                    <th>Location</th>
+                                    <th>Contact</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-pending-users-list">
+                                <!-- Pending users will be loaded here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3>Registered Waste Management Companies</h3>
+                <div class="stat-card">
+                    <!-- Wrap tables in responsive container for mobile -->
+                    <div class="responsive-table-container"> 
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Company Name</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-collectors-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3>Registered Reporters</h3>
+                <div class="stat-card">
+                    <!-- Wrap tables in responsive container for mobile -->
+                    <div class="responsive-table-container"> 
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-reporters-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-settings" class="dashboard-view hidden">
+                <h2>Rate Management</h2>
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <p>Set the base service fees for Nakawa Division Parishes.</p>
+                    <div class="responsive-table-container">
+                        <button onclick="window.addRate()" class="register-button" style="width: auto; margin-bottom: 15px; background-color: #4CAF50;">+ Add New Parish</button>
+                        <table>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <th style="padding: 10px;">Parish</th>
+                                <th>Price per KG/Litre (UGX)</th>
+                                <th>Action</th>
+                            </tr>
+                            <tbody id="admin-rates-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Logs View -->
+            <div id="admin-logs" class="dashboard-view hidden">
+                <h2>System Transaction Logs</h2>
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="responsive-table-container">
+                        <!-- Wrap tables in responsive container for mobile -->
+                        <div class="responsive-table-container"> 
+                            <table id="admin-transactions-table">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #eee;">
+                                    <th style="padding: 10px;">Timestamp</th>
+                                    <th>Reporter</th>
+                                    <th>Location</th>
+                                    <th>Total Fee</th>
+                                    <th>Admin Cut (2%)</th>
+                                    <th>Collector</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-log-list"></tbody>
+                            <tfoot>
+                                <tr style="background-color: #f8f9fa; font-weight: bold; border-top: 2px solid #3F51B5;">
+                                    <td colspan="3" style="text-align: right; padding: 12px 15px;">Total Maintenance Collection:</td>
+                                    <td id="admin-total-maintenance" style="color: #4CAF50; padding: 12px 15px;">UGX 0</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h3>Withdrawal History</h3>
+                    <!-- Wrap tables in responsive container for mobile -->
+                    <div class="responsive-table-container"> 
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Account/Reference</th>
+                                    <th>Admin</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-withdrawal-history-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button id="clearAllRecordsBtn" class="register-button btn-red" style="width: auto;">Clear All Records</button>
+                    <button onclick="window.recalculateAdminCuts()" class="register-button btn-orange" style="width: auto;">Recalculate Revenue (Fix UGX 0)</button>
+                </div>
+            </div>
+
+            <!-- Messaging View -->
+            <div id="view-messages" class="dashboard-view hidden" style="flex: 1; display: flex; flex-direction: column;">
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="message-area" style="flex: 1; display: flex;">
+                    <div class="chat-list" id="admin-chat-list"></div>
+                    <div class="chat-window" id="admin-chat-window">
+                        <div class="chat-header">
+                            <span id="admin-current-chat-name">Chat with: </span>
+                            <select id="admin-chat-selector" class="chat-selector">
+                                <option value="">Select a person...</option>
+                            </select>
+                        </div>
+                        <div class="chat-messages" id="admin-chat-messages"></div>
+                        <div class="chat-input">
+                            <input type="text" id="admin-message-input" placeholder="Type a message (emojis welcome! 🗑️)...">
+                            <button class="register-button" style="width: auto; margin-top: 0;" id="admin-send-message-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2026 B_Chain Waste Management System. All Rights Reserved.</p>
+        <p>Designed for the Nakawa Division Community.</p>
+    </footer>
+
+    <!-- Action Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage" style="margin-bottom: 25px; color: #555;"></p>
+            <input type="text" id="confirmInput" class="hidden" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;" placeholder="Enter value here...">
+            <div class="modal-actions">
+                <button type="button" class="register-button btn-red" style="width: 45%;" id="cancelActionBtn">No, Cancel</button>
+                <button type="button" class="register-button" style="width: 45%;" id="proceedActionBtn">Yes, Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdrawal Modal -->
+    <div id="withdrawalModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 450px;">
+            <h3>Withdraw System Fees</h3>
+            <div class="form-group">
+                <label>Amount (UGX)</label>
+                <input type="number" id="withdrawAmount" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+                <label>Method</label>
+                <select id="withdrawMethod">
+                    <option value="">Select Method...</option>
+                    <option value="mobileMoney">Mobile Money</option>
+                    <option value="bankTransfer">Bank Transfer</option>
+                </select>
+            </div>
+            <!-- Dynamic Details -->
+            <div id="mobileMoneyWithdrawalDetails" class="hidden withdrawal-details-group">
+                <label>MM Phone Number</label>
+                <input type="text" id="withdrawMMNumber" placeholder="2567...">
+            </div>
+            <div id="bankTransferWithdrawalDetails" class="hidden withdrawal-details-group">
+                <label>Bank Name</label>
+                <input type="text" id="withdrawBankName" placeholder="e.g. Stanbic">
+                <label>Account Number</label>
+                <input type="text" id="withdrawAccountNumber">
+                <label>Account Name</label>
+                <input type="text" id="withdrawAccountName">
+            </div>
+            <div class="modal-actions" style="margin-top: 20px;">
+                <button type="button" class="register-button btn-red" id="cancelWithdrawBtn">Cancel</button>
+                <button type="button" class="register-button" id="confirmWithdrawBtn">Confirm Withdrawal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Maintenance Broadcast Modal -->
+    <div id="maintenanceBroadcastModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 450px; text-align: left;">
+            <h3 style="text-align: center; color: #f39c12;">Broadcast Maintenance Details</h3>
+            <p style="font-size: 0.9em; color: #666; margin-bottom: 20px; text-align: center;">Fill in the details below to notify all system users.</p>
+            
+            <div class="form-group">
+                <label>Maintenance Message</label>
+                <textarea id="maint-message" rows="5" style="width: 100%; border: 1px solid #ccc; border-radius: 5px; padding: 10px; font-family: inherit;" placeholder="Type your maintenance message here (include the activity, duration, and expected online time)..."></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="register-button btn-red" style="width: 45%;" id="cancelMaintBtn">Cancel</button>
+                <button type="button" class="register-button" style="background-color: #f39c12; width: 45%;" id="sendMaintBroadcastBtn">Send Broadcast</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

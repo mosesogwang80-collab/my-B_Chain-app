@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B_Chain - Collector Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="top-nav">
+            <div class="nav-brand">B-Chain System</div>
+            <a href="#" id="globalBackBtn" class="nav-link hidden" style="margin-left: 20px; border: 1px solid rgba(255,255,255,0.3);">← Back</a>
+            <nav class="nav-links">
+                <a href="#" class="nav-link sidebar-link active" data-target="view-tasks">Home</a>
+                <a href="#" class="nav-link sidebar-link" data-target="view-messages">Contact</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropbtn">Menu ▾</button>
+                    <div class="nav-dropdown-content">
+                        <a href="#" class="sidebar-link" data-target="view-progress">In Progress</a>
+                        <a href="#" class="sidebar-link" data-target="view-history">Completed Tasks</a>
+                        <a href="#" class="sidebar-link" data-target="view-earnings">Earnings</a>
+                        <a href="profile.html">My Profile</a>
+                        <a href="#" class="sidebar-link" data-target="view-messages">Messages</a>
+                        <div style="padding: 10px 16px; border-top: 1px solid #eee;">
+                           <span id="availabilityStatus" style="font-size: 0.75em; color: #666;">Status: On Duty</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="nav-link" onclick="logout()" style="margin-left: 10px;">Logout</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <img src="logo.png" alt="B_Chain Logo" class="logo">
+            <!-- Available Tasks View -->
+            <div id="view-tasks" class="dashboard-view">
+                <h2>Available Tasks in Nakawa</h2>
+                
+                <!-- Container for real-time unread message alerts -->
+                <div class="home-unread-alerts hidden"></div>
+
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><h4>Open Tasks</h4><p id="stat-open">0</p></div>
+                    <div class="stat-card"><h4>Completed</h4><p>0</p></div>
+                    <div class="stat-card"><h4>Accuracy Rating</h4><p>---</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="responsive-table-container">
+                        <h3>Pending Requests</h3>
+                        <table>
+                            <thead>
+                                <tr style="border-bottom: 2px solid #eee;">
+                                    <th style="padding: 10px;">Location</th>
+                                    <th>Reporter</th>
+                                    <th>Type & Volume</th>
+                                    <th>Fee (Net)</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="available-tasks-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- In Progress View -->
+            <div id="view-progress" class="dashboard-view hidden">
+                <h2>Current Assignments</h2>
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <p id="no-tasks-msg" style="color: #666;">No current assignments at the moment.</p>
+                    <div id="active-tasks-container"></div>
+                </div>
+            </div>
+
+            <!-- Completed Tasks View -->
+            <div id="view-history" class="dashboard-view hidden">
+                <h2>Work History</h2>
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="responsive-table-container">
+                        <table>
+                            <thead>
+                                <tr style="border-bottom: 2px solid #eee;">
+                                    <th style="padding: 10px;">Date</th>
+                                    <th>Reporter</th>
+                                    <th>Location</th>
+                                    <th>Type</th>
+                                    <th>Earned</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="collector-history-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings View -->
+            <div id="view-earnings" class="dashboard-view hidden">
+                <h2>Financial Summary</h2>
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h4>Total Payout (After 2% Fee)</h4>
+                    <p id="collector-total-earnings" style="font-size: 2em; color: #4CAF50;">UGX 0</p>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: #fff3e0; border-radius: 8px; border-left: 5px solid #ff9800;">
+                        <h4 style="color: #e65100; margin: 0;">Outstanding System Fees (Cash Debt)</h4>
+                        <p id="collector-admin-debt" style="font-size: 1.5em; color: #e65100; margin: 10px 0;">UGX 0</p>
+                        <button class="register-button btn-orange" id="settleDebtBtn" style="width: auto; margin-top: 5px; padding: 8px 15px;">Settle Fees via MoMo</button>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 20px; max-width: 300px;">
+                        <label>Payout Mobile Money Number</label>
+                        <input type="text" id="collectorMM" placeholder="e.g. 0770000000">
+                        <button class="register-button" id="saveCollectorMM" style="padding: 8px; margin-top: 5px; font-size: 0.9em;">Save Number</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messaging View -->
+            <div id="view-messages" class="dashboard-view hidden" style="flex: 1; display: flex; flex-direction: column;">
+                <div class="stat-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid #3F51B5;">
+                    <div style="font-weight: bold; color: #3F51B5;">Quick Reports & Data Exports</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.printRecords()" class="register-button" style="width: auto; background-color: #3F51B5; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Print Records</button>
+                        <button onclick="window.exportToPDF()" class="register-button" style="width: auto; background-color: #e74c3c; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">PDF Transfer</button>
+                        <button onclick="window.exportToExcel()" class="register-button" style="width: auto; background-color: #27ae60; margin-top: 0; padding: 8px 15px; font-size: 0.85em;">Excel Transfer</button>
+                    </div>
+                </div>
+                <div class="message-area" style="flex: 1; display: flex;">
+                    <div class="chat-list" id="collector-chat-list">
+                        <!-- Chat items will be loaded here by JavaScript -->
+                    </div>
+                    <div class="chat-window" id="collector-chat-window">
+                        <div class="chat-header">
+                            <span id="collector-current-chat-name">Chat with: </span>
+                            <select id="collector-chat-selector" class="chat-selector">
+                                <option value="">Select a person...</option>
+                            </select>
+                        </div>
+                        <div class="chat-messages" id="collector-chat-messages">
+                            <!-- Messages will be loaded here by JavaScript -->
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="collector-message-input" placeholder="Type a message...">
+                            <button class="register-button" style="width: auto; margin-top: 0;" id="collector-send-message-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2026 B_Chain Waste Management System. All Rights Reserved.</p>
+        <p>Designed for the Nakawa Division Community.</p>
+    </footer>
+
+    <!-- Rating Modal -->
+    <div id="ratingModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3>Rate System Effectiveness</h3>
+            <p id="ratingTaskInfo" style="font-weight: bold; margin-bottom: 10px;"></p>
+            
+            <div id="collector-rating-section" class="hidden">
+                <label>Rate the Collector (Company)</label>
+                <div class="rating-stars" id="collector-stars">
+                    <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+                </div>
+            </div>
+
+            <label>Rate the B_Chain System</label>
+            <div class="rating-stars" id="system-stars">
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="register-button btn-red" id="cancelRatingBtn">Cancel</button>
+                <button type="button" class="register-button" id="submitRatingBtn">Submit Rating</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage" style="margin-bottom: 25px; color: #555;"></p>
+            <input type="text" id="confirmInput" class="hidden" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;" placeholder="Enter value here...">
+            <div class="modal-actions">
+                <button type="button" class="register-button btn-red" style="width: 45%;" id="cancelActionBtn">No, Cancel</button>
+                <button type="button" class="register-button" style="width: 45%;" id="proceedActionBtn">Yes, Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

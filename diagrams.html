@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B_Chain System Documentation - Diagrams</title>
+    <!-- Load Mermaid.js from CDN -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'neutral',
+            flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
+        });
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f0f2f5; margin: 0; padding: 0; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 20px; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-radius: 12px; }
+        header { border-bottom: 3px solid #3F51B5; margin-bottom: 40px; padding-bottom: 10px; display: flex; align-items: center; gap: 20px; }
+        header img { max-width: 80px; }
+        h1 { color: #3F51B5; margin: 0; }
+        h2 { color: #2e7d32; border-left: 5px solid #2e7d32; padding-left: 15px; margin-top: 50px; }
+        .diagram-box { background: #fff; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 30px; overflow-x: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .presentation-box { background: #ffffff; border: 3px solid #3F51B5; padding: 30px; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; }
+        .desc { font-style: italic; color: #666; margin-bottom: 20px; }
+        footer { text-align: center; padding: 20px; color: #888; font-size: 0.9em; }
+        .slide-label { background: #1a237e; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; margin-bottom: 20px; display: inline-block; font-size: 1.2em; letter-spacing: 1px; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="Logo">
+            <h1>B_Chain System Illustrations</h1>
+        </header>
+
+        <div style="background: #e8eaf6; padding: 20px; border-radius: 8px; margin-bottom: 40px;">
+            <h2 style="margin-top: 0;">PPT Presentation Version (Simplified)</h2>
+            <p>The diagrams below are designed to be screenshotted directly into PowerPoint slides.</p>
+            <p style="font-weight: bold; color: #c62828;">For best quality and size control, copy the Mermaid code from each box below and paste it into the <a href="https://mermaid.live/" target="_blank">Mermaid Live Editor</a>, then use its 'Download PNG' or 'Download SVG' option.</p>
+            <div class="presentation-box">
+                <span class="slide-label">Slide: System Flow (Landscape)</span>
+                <pre class="mermaid">
+                graph LR
+                    A[Reporter: Request] --> B{System}
+                    B --> C[Collector: Accept]
+                    C --> D[Service Done]
+                    D --> E[Admin: Revenue]
+                    style B fill:#3F51B5,color:#fff
+                    style E fill:#2e7d32,color:#fff
+                </pre>
+            </div>
+
+            <div class="presentation-box">
+                <span class="slide-label">Slide: Detailed User Onboarding</span>
+                <pre class="mermaid">
+                graph LR
+                    A[New User] --> B{Get Started}
+                    B --> C[Safety Notice]
+                    C --> D[Login/Register]
+                    D --> E[Pending Status]
+                    E --> F{Admin Review}
+                    F -->|Approve| G[Active Account]
+                    F -->|Reject| H[Deleted]
+                    style G fill:#2e7d32,color:#fff
+                    style E fill:#f39c12,color:#fff
+                </pre>
+            </div>
+
+            <div class="presentation-box">
+                <span class="slide-label">Slide: Data Flow (Context Level)</span>
+                <pre class="mermaid">
+                graph LR
+                    Reporter ((Reporter)) -- "Reports Waste" --> System[[B_Chain Platform]]
+                    System -- "Allocates Task" --> Collector((Collector))
+                    Admin((Admin)) -- "Sets Rates" --> System
+                    System -- "Analytics" --> Admin
+                </pre>
+            </div>
+
+            <div class="presentation-box">
+                <span class="slide-label">Slide: Database Schema & Relationships (ERD)</span>
+                <pre class="mermaid">
+                erDiagram
+                    USER ||--o{ WASTE_REQUEST : "1:N (Manages)"
+                    USER ||--o{ MESSAGE : "1:N (Communicates)"
+                    WASTE_REQUEST ||--|| SYSTEM_SETTING : "1:1 (Pricing)"
+                    
+                    USER {
+                        string username PK
+                        string role
+                    }
+                    WASTE_REQUEST {
+                        string id PK
+                        string reporter_username FK
+                        string collector_username FK
+                    }
+                    MESSAGE {
+                        int id PK
+                        string sender FK
+                        string recipient FK
+                    }
+                </pre>
+            </div>
+        </div>
+
+        <p>This page renders the architectural and procedural logic of the <strong>B_Chain Waste Management System</strong> using Mermaid.js.</p>
+
+        <h2>1. User Registration & Admin Approval</h2>
+        <p class="desc">The flow of a new user from first visit to system access.</p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+            graph LR
+                Start[New User] --> Reg[Register Account]
+                Reg --> Status((Pending))
+                Status --> Admin{Admin Review}
+                Admin -->|Approve| Active[Active: Access Granted]
+                Admin -->|Reject| Del[Delete Account]
+                style Active fill:#2e7d32,color:#fff
+                style Status fill:#f39c12,color:#fff
+            </pre>
+        </div>
+
+        <h2>2. Waste Request & Payment Process</h2>
+        <p class="desc">How a reporter files a request and the system allocates a collector.</p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+            graph LR
+                A[Reporter: Create Report] --> B[Auto-Calculate Fee]
+                B --> C{Payment Method}
+                C -->|Mobile Money| D[Verify Ref #]
+                C -->|Cash| E[On Collection]
+                D & E --> F[Auto-Allocate Collector]
+                style F fill:#3F51B5,color:#fff
+            </pre>
+        </div>
+
+        <h2>3. Waste Request State Transitions</h2>
+        <p class="desc">The logical states an order moves through within the system database.</p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+stateDiagram-v2
+    direction LR
+    [*] --> Pending: Reporter Submits
+    Pending --> Accepted: Collector Claims
+    Accepted --> Completed: Receipt Logged
+    Accepted --> Pending: Collector Declines (Re-allocation)
+    Pending --> Rejected: Admin Deletes
+    Completed --> [*]
+            </pre>
+        </div>
+
+        <h2>4. Task Management (Collector)</h2>
+        <p class="desc">The lifecycle of a task from assignment to completion.</p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+            graph LR
+                A[Available List] --> B{Accept?}
+                B -->|No| C[Reallocate]
+                B -->|Yes| D[In Progress]
+                D --> E[Collect Waste]
+                E --> F[Complete & Log Receipt]
+                style F fill:#2e7d32,color:#fff
+            </pre>
+        </div>
+
+        <h2>5. System Architecture</h2>
+        <p class="desc">The technical stack and communication layers.</p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+            graph LR
+                subgraph Client
+                UI[Browser: JS/CSS]
+                end
+                UI <-->|REST API| Flask[Flask Server]
+                Flask <--> DB[(SQLite DB)]
+                Flask --- Auth[Auth Logic]
+                style Client fill:#e8eaf6
+                style DB fill:#fff
+            </pre>
+        </div>
+
+        <h2>6. Entity-Relationship Diagram (ERD)</h2>
+        <p class="desc">The database structure and how tables connect.</p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+erDiagram
+    USER ||--o{ WASTE_REQUEST : "1:N (Reports/Collects)"
+    USER ||--o{ MESSAGE : "1:N (Sends/Receives)"
+    WASTE_REQUEST ||--|| SYSTEM_SETTING : "1:1 (Rates)"
+    
+    USER {
+        string username PK
+        string role
+    }
+    WASTE_REQUEST {
+        string id PK
+        string reporter_username FK
+        string collector_username FK
+        string status
+    }
+    MESSAGE {
+        int id PK
+        string sender FK
+        string recipient FK
+    }
+    SYSTEM_SETTING {
+        string key PK
+        string value
+    }
+            </pre>
+        </div>
+
+        <h2>7. Data Flow Diagram (DFD - Context)</h2>
+        <p class="desc">High-level data movement between users and the system.</p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+graph LR
+    Reporter((Reporter)) -->|Waste Requests| System{B_Chain System}
+    Collector((Collector)) -->|Task Updates| System
+    Admin((Admin)) -->|Approvals & Rates| System
+    System -->|Notifications| Reporter
+    System -->|Assignments| CollectorEW 
+    System -->|Analytics| Admin
+    System --- DB[(SQLite Database)]
+            </pre>
+        </div>
+
+    </div>
+    <footer>
+        <p>&copy; 2026 B_Chain Waste Management System. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
